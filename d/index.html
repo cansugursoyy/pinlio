@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap"><link rel="stylesheet" href="../_style.css"><link rel="icon" href="../pinlio-mark.png">
+<title>Pinlio listesine davet</title>
+<meta name="description" content="Bir Pinlio listesine davet edildin. Katıl, birlikte yer ekleyin.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pinlio">
+<meta property="og:title" content="Pinlio listesine davet edildin">
+<meta property="og:description" content="Katıl, birlikte yer ekleyin.">
+<meta property="og:url" content="https://pinlio.app/d/">
+<meta property="og:image" content="https://pinlio.app/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pinlio.app/og.jpg">
+</head>
+<body>
+<main>
+<img class="mark" src="../pinlio-mark.png" alt="">
+<p class="brand">Pinlio</p>
+<h1 id="t">Bir listeye davet edildin</h1>
+<p id="d">Katıl, birlikte yer ekleyin.</p>
+<a class="btn" id="go" href="https://apps.apple.com/app/id6830555330">Listeye katıl</a>
+<a class="btn secondary" id="store" href="https://apps.apple.com/app/id6830555330">Pinlio'yu indir</a>
+<p class="small" id="s">Pinlio yüklü değilse önce indir, sonra bu bağlantıya tekrar dokun.</p>
+</main>
+<script>
+var $=function(i){return document.getElementById(i)},t=$("t"),d=$("d"),go=$("go"),store=$("store"),s=$("s");
+// Kısa davet: pinlio.app/d/#<iCloud paylaşım kodu>. Kod # sonrasında durur, sunucuya gitmez.
+// Yalnızca www.icloud.com/share/<kod> adresine yönlendirilir.
+var code=location.hash.slice(1).split(/[&?]/)[0];
+var ok=/^[A-Za-z0-9_-]{8,80}$/.test(code), u="https://www.icloud.com/share/"+code;
+var en=!/^tr/i.test(navigator.language||"");
+if(en){document.documentElement.lang="en";t.textContent="You're invited to a list";d.textContent="Join and add places together.";go.textContent="Join the list";store.textContent="Get Pinlio";s.textContent="Don't have Pinlio yet? Get it first, then tap this link again.";}
+if(ok){go.href=u;location.replace(u);}else{go.style.display="none";d.textContent=en?"This invite link looks incomplete. Ask your friend to send it again.":"Bu davet bağlantısı eksik görünüyor. Arkadaşından tekrar göndermesini iste.";}
+</script>
+</body>
+</html>
