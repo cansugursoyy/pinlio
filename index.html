@@ -1,233 +1,578 @@
 <!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pinlio Destek</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pinlio · Gezi listelerin, birlikte</title>
+<meta name="description" content="Instagram'da kaydettiğin yerleri tek haritada topla, arkadaşlarınla ortak gezi listeleri yap, gezini gün gün planla. iPhone için ücretsiz." id="mdesc">
+<link rel="canonical" href="https://pinlio.app/">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-itunes-app" content="app-id=6830555330">
+<link rel="apple-touch-icon" href="pinlio-mark.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pinlio">
+<meta property="og:url" content="https://pinlio.app/">
+<meta property="og:title" content="Pinlio · Gezi listelerin, birlikte">
+<meta property="og:description" content="Instagram'da kaydettiğin yerleri tek haritada topla, arkadaşlarınla ortak gezi listeleri yap, gezini gün gün planla. iPhone için ücretsiz.">
+<meta property="og:image" content="https://pinlio.app/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR"><meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pinlio · Gezi listelerin, birlikte">
+<meta name="twitter:description" content="Instagram'da kaydettiğin yerleri tek haritada topla, arkadaşlarınla ortak gezi listeleri yap, gezini gün gün planla. iPhone için ücretsiz.">
+<meta name="twitter:image" content="https://pinlio.app/og.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"MobileApplication","name":"Pinlio","operatingSystem":"iOS","applicationCategory":"TravelApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://pinlio.app/","downloadUrl":"https://apps.apple.com/app/id6830555330","description":"Collect the places you save on Instagram on one map, build shared travel lists with friends and plan your trip day by day. Free for iPhone."}</script>
+<link rel="icon" href="pinlio-mark.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Caveat:wght@600;700&display=swap">
 <style>
-/* Tek sütun, sakin metin sayfası; üstte Pinlio işareti, dil ve bölüm geçişi. Uygulamanın mercanı tek vurgu. */
-:root {
-  --bg: #fbf8f6;
-  --surface: #ffffff;
-  --fg: #2a1712;
-  --muted: #7a625b;
-  --line: #eadfda;
-  --accent: #e8543a;
-  --accent-soft: #fde9e4;
-  --font: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+:root{--bg:#ffffff;--ink:#2a1712;--muted:#7a625b;--coral:#e8543a;--line:#eadfda;--hand:"Caveat",cursive;--font:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;--sh:0 2px 12px rgba(0,0,0,.06)}
+*{box-sizing:border-box}html,body{margin:0}html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+html{overflow-x:hidden}
+.wrap{position:relative;max-width:1180px;margin:0 auto;padding:0 24px}
+main{overflow-x:clip}
+.bar{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;transition:transform .35s cubic-bezier(.2,.9,.2,1)}
+.bar.hide{transform:translateY(-100%)}
+.barin{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.right{display:flex;align-items:center;gap:28px}
+.nav{display:flex;gap:28px;font-weight:600;font-size:15px;color:var(--muted)}
+.nav a{text-decoration:none}.nav a:hover{color:var(--ink)}
+@media(max-width:600px){.nav{display:none}}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px;text-decoration:none}
+.logo img{width:28px;height:28px}
+.store{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;text-decoration:none;border-radius:999px;padding:11px 20px;font-weight:700;font-size:15px;white-space:nowrap;transition:transform .2s}
+.store:hover{transform:translateY(-2px)}
+.store svg{width:18px;height:18px;fill:#fff}
+.store.big{font-size:18px;padding:16px 28px}
+#route{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:0;overflow:visible}
+#route path{fill:none;stroke:var(--coral);stroke-width:4;stroke-linecap:round;stroke-dasharray:2 14;opacity:.55}
+section{position:relative;z-index:1}
+/* giriş: solda yazı, sağda ekran kartları */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;gap:40px;min-height:100vh;min-height:100svh;padding:110px 0 60px}
+h1{font-size:clamp(52px,7.6vw,108px);line-height:1;letter-spacing:-.045em;margin:0;font-weight:800}
+h1 .w{display:inline-block;opacity:0;transform:translateY(40px);animation:up .8s cubic-bezier(.2,.9,.2,1.1) forwards}
+h1 em,h2 em{font-style:normal;color:var(--coral)}
+@keyframes up{to{opacity:1;transform:none}}
+.lead{font-size:clamp(17px,1.7vw,20px);color:var(--muted);max-width:480px;margin:36px 0 40px;line-height:1.6}
+.heroart{position:relative;height:580px}
+.drop{position:absolute;width:30px;opacity:0;animation:drop 1s cubic-bezier(.3,1.6,.5,1) forwards;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12));z-index:4;pointer-events:none}
+@keyframes drop{0%{opacity:0;transform:translateY(-200px)}60%{opacity:1}100%{opacity:1;transform:none}}
+.pol{position:absolute;background:#fff;border:1px solid #eee;padding:8px 8px 34px;border-radius:6px;box-shadow:var(--sh);width:150px;cursor:grab;touch-action:none;user-select:none;margin:0;z-index:2;transition:transform .45s cubic-bezier(.2,1.5,.3,1)}
+.pol.hover,.pol.dragging{z-index:20}.pol.dragging{cursor:grabbing;transition:none}
+.pol img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#eee;pointer-events:none}
+.pol span{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--hand);font-size:20px}
+.card{background:#fff;border:1px solid #eee;border-radius:28px;box-shadow:var(--sh)}
+.hcard{position:absolute;left:22%;top:19%;width:min(340px,70%);padding:22px;z-index:1}
+.card h3{margin:0 0 4px;font-size:22px}
+.card small{color:var(--muted);font-weight:600}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:15px}
+.row:last-of-type{border:0}
+.row .who{margin-left:auto;font-size:12px;font-weight:700;color:var(--muted)}
+.mfaces{display:flex;margin-top:12px}
+.mfaces i{font-style:normal;width:30px;height:30px;border-radius:50%;border:3px solid #fff;display:grid;place-items:center;font-weight:800;font-size:12px;margin-left:-8px}
+.mfaces i:first-child{margin-left:0}
+.f1{background:#fde3dc;color:var(--coral)}.f2{background:#e6e1fb;color:#6a5acd}.f3{background:#fff0c2;color:#b8860b}
+.saved{display:inline-flex;background:#fff;border:1px solid #eee;border-radius:18px;padding:12px 16px;align-items:center;gap:10px;font-weight:700;font-size:15px;box-shadow:var(--sh)}
+.saved b{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.dot{width:38px;height:38px;border-radius:50%;background:#fde9e4;display:grid;place-items:center;font-size:20px}
+.hero .saved{position:absolute;left:31%;bottom:4%;z-index:3;rotate:-3deg}
+/* hafif hareketler */
+.hero .pol{animation:bob 6s ease-in-out infinite}
+.hero .pol:nth-of-type(2){animation-duration:7s;animation-delay:-2s}
+.hero .pol:nth-of-type(3){animation-duration:5.5s;animation-delay:-4s}
+.hero .pol:nth-of-type(4){animation-duration:6.5s;animation-delay:-1s}
+.hero .pol.dragging,.hero .pol.hover{animation-play-state:paused}
+@keyframes bob{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -9px;rotate:1.2deg}}
+.rows .row{overflow:hidden;max-height:60px;transition:max-height .5s,padding .5s,opacity .4s,border-color .5s}
+.rows .row.new{animation:rowin .6s cubic-bezier(.2,1.2,.3,1)}
+@keyframes rowin{from{opacity:0;translate:0 14px;background:#fff6f3}}
+.rows .row.out{max-height:0;padding:0;opacity:0;border-color:transparent}
+#hcount{font-weight:inherit;display:inline-block}
+#hcount.tick{animation:tick .5s}
+@keyframes tick{40%{scale:1.35;color:var(--coral)}}
+.mfaces i.hop{animation:hop .6s cubic-bezier(.3,1.8,.5,1)}
+@keyframes hop{40%{translate:0 -8px}}
+/* dil */
+.langlink{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:15px;color:var(--muted);text-decoration:none}
+.langlink:hover{color:var(--ink)}.langlink svg{width:17px;height:17px}
+@media(max-width:600px){.right{gap:12px}}
+.screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* harita pin kartı */
+.pincard{width:300px;padding:16px;transform:rotate(-3deg)}
+.ptop{display:flex;gap:12px;align-items:center}
+.ptop b{display:block;font-size:17px}.ptop small{color:var(--muted);font-weight:600;font-size:13px}
+.pnote{margin:12px 0 14px!important;font-size:15px!important;color:var(--ink)!important;font-family:var(--hand);font-size:22px!important;line-height:1.2!important}
+.go{display:flex;justify-content:center;gap:6px;background:var(--coral);color:#fff;border-radius:999px;padding:11px;font-weight:700;font-size:15px}
+/* rota ve keşif */
+.lists2{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:460px;transform:rotate(2deg)}
+.lcol{display:flex;flex-direction:column;gap:10px}
+.ltag{align-self:flex-start;background:var(--ink);color:#fff;font-weight:800;font-size:13px;padding:6px 12px;border-radius:999px}
+.ltag.k{background:var(--coral)}
+.ltag{display:inline-flex;align-items:center;gap:7px}.ltag svg{width:17px;height:17px}
+.li{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #eee;border-radius:18px;padding:10px;box-shadow:var(--sh)}
+.le{width:40px;height:40px;border-radius:12px;background:#fdf1ee;display:grid;place-items:center;font-size:20px;flex:none}
+.lt{display:flex;flex-direction:column;min-width:0;flex:1}
+.lt b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lt small{font-size:12px;color:var(--muted);font-weight:600}
+.prog{display:block;height:5px;background:#eee;border-radius:9px;margin-top:6px;overflow:hidden}.prog i{display:block;height:100%;background:var(--coral);border-radius:9px}
+.reveal .li{opacity:0;translate:0 16px;transition:opacity .5s,translate .6s cubic-bezier(.2,1.3,.3,1)}
+.reveal.in .li{opacity:1;translate:0 0}
+.reveal.in .lcol:nth-child(2) .li{transition-delay:.15s}.reveal.in .li:nth-child(3){transition-delay:.3s}.reveal.in .li:nth-child(4){transition-delay:.45s}
+.art.center,.feat .art.center{justify-content:center;padding:0}
+.lcol{width:220px}
+.art.center .phone{width:236px}
+.ltag{font-size:15px;padding:8px 16px}
+.float.fr{left:-64px;right:auto;top:8%;bottom:auto;transform:rotate(-3deg) scale(.78);transform-origin:top left}
+.float.fk{right:0;left:auto;bottom:6%;transform:rotate(3deg) scale(.78);transform-origin:bottom right}
+.fk .ltag{align-self:flex-end}
+@media(max-width:900px){.art.center{flex-direction:column;align-items:center}.float.fr,.float.fk{position:relative;left:auto;right:auto;top:auto;bottom:auto;transform:none;margin:18px 0 0}.float.fk{margin-top:14px}}
+.feat.rev .float:has(.strip){left:-20px;bottom:10px;transform:scale(.62)}
+@media(max-width:900px){.feat.rev .float:has(.strip){left:auto;bottom:auto;transform:scale(.72)}}
+/* not kartı */
+.notecard{width:320px;padding:18px;transform:rotate(-3deg)}
+.nlabel{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
+.notecard p{margin:8px 0 14px;font-family:var(--hand);font-size:25px;line-height:1.15;color:var(--ink)}
+.thumbs{display:flex;gap:10px}
+.thumbs .pol{position:relative;width:110px;padding:6px 6px 18px;cursor:default;transform:rotate(-4deg)}
+.thumbs .pol+.pol{transform:rotate(5deg)}
+.notecard .by{display:block;margin-top:12px;color:var(--muted);font-weight:600;font-size:12px}
+/* bugün kartı */
+.today{width:330px;padding:18px;transform:rotate(-2deg)}
+.today .thead{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.today .te{width:46px;height:46px;border-radius:14px;background:#e3efff;display:grid;place-items:center;font-size:24px}
+.today .thead b{display:block;font-size:18px}.today .thead small{color:var(--muted);font-weight:600;font-size:13px}
+.tstop{display:flex;align-items:center;gap:12px;padding:7px 0;transition:opacity .35s,transform .35s}
+.tstop .n{width:28px;height:28px;border-radius:50%;background:#f1eeed;color:var(--muted);display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.tstop.cur .n{background:var(--coral);color:#fff}
+.tstop .nm{flex:1;font-size:16px;font-weight:500}.tstop.cur .nm{font-weight:700}
+.tick{width:30px;height:30px;border-radius:50%;border:2px solid #ddd;background:#fff;cursor:pointer;flex:none;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:800;transition:all .25s}
+.tick:hover{border-color:var(--coral)}
+.tstop.done .tick{background:var(--coral);border-color:var(--coral)}
+.tstop.done .nm{text-decoration:line-through;color:var(--muted)}
+.tstop.out{opacity:0;transform:translateX(-20px)}
+.tmore{font-size:13px;color:var(--muted);font-weight:600;margin:2px 0 12px 40px}
+.tnext{display:flex;align-items:center;gap:8px;background:var(--coral);color:#fff;border-radius:999px;padding:13px 18px;font-weight:700;font-size:15px}
+.tnext span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tnext.flash{animation:pop .5s}
+/* nereye gidelim */
+.slot{width:340px;padding:24px;text-align:center;transform:rotate(-2deg);margin:40px 0}
+.stop2{display:inline-flex;gap:6px;background:#f4f1f0;border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px}
+.slot h3{margin:14px 0 16px;font-size:24px}
+.win{display:flex;align-items:center;justify-content:center;gap:8px;height:74px;border-radius:20px;background:#fff6f3;border:1px solid #fde3dc;overflow:hidden}
+.win .name{font-weight:800;font-size:20px;white-space:nowrap}
+.win .name.roll{animation:roll .12s linear}
+.win .name.pop{animation:pop .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes roll{from{translate:0 -60%;opacity:.3}}
+@keyframes pop{40%{scale:1.15}}
+.slot .sub{margin:12px 0 18px;color:var(--muted);font-size:15px}
+.again{border:0;background:var(--coral);color:#fff;font:700 15px var(--font);border-radius:999px;padding:12px 22px;cursor:pointer;transition:transform .2s}
+.again:hover{transform:translateY(-2px)}
+/* özellikler: bir yanda yazı, öbür yanda telefon */
+.feat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:60px;align-items:center;padding:110px 0}
+.feat.rev .txt{order:2}
+.kick{display:inline-flex;align-items:center;gap:6px;background:#fdf1ee;color:var(--coral);font-weight:800;font-size:14px;letter-spacing:.02em;padding:7px 14px;border-radius:999px}
+h2{font-size:clamp(38px,5.4vw,68px);line-height:.98;letter-spacing:-.04em;margin:18px 0 16px}
+.feat .txt p{font-size:18px;line-height:1.6;color:var(--muted);max-width:460px;margin:0}
+.note{font-family:var(--hand);font-size:26px;color:var(--coral);display:inline-block;transform:rotate(-2deg);margin-top:16px}
+.art{position:relative;display:flex;justify-content:flex-start;padding:0 0 0 10px}
+.feat.rev .art{justify-content:flex-end;padding:0 10px 0 0}
+.phone{position:relative;z-index:1;width:290px;aspect-ratio:600/1302;border-radius:50px;background:#111;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.08),inset 0 0 0 3px #333;flex:none}
+.screen{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:#fff}
+.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.float{position:absolute;bottom:40px;right:0;z-index:4;transform:scale(.74);transform-origin:bottom right}
+.feat.rev .float{right:auto;left:0;transform-origin:bottom left}
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .8s,transform .8s cubic-bezier(.2,.9,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal .float{opacity:0;translate:0 40px;transition:opacity .7s .3s,translate .8s cubic-bezier(.2,1.3,.3,1) .3s}
+.reveal.in .float{opacity:1;translate:0 0}
+/* yüzen kartlar */
+.ig{position:relative;width:300px;background:#fff;border:1px solid #eee;border-radius:22px;padding:12px 12px 16px;box-shadow:var(--sh);transform:rotate(4deg)}
+.ig .top{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.ig .who{display:flex;flex-direction:column;line-height:1.15;font-size:14px}.ig .who small{font-size:11.5px;color:#555;font-weight:500}
+.ig .more{margin-left:auto;font-size:11px;letter-spacing:1px;color:#222}
+.ig .av{width:32px;height:32px;border-radius:50%;background:conic-gradient(from 200deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5,#feda75);padding:2px;flex:none}
+.ig .av i{display:block;width:100%;height:100%;border-radius:50%;background:#eee center/cover no-repeat;border:2px solid #fff}
+.ig img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px;display:block;background:#eee}
+.ig .acts{display:flex;justify-content:space-between;align-items:center;margin-top:10px;color:#111}
+.ig .acts svg{width:25px;height:25px}.ig .acts .l{display:flex;gap:14px}
+.ig .likes{font-weight:700;font-size:13.5px;margin-top:8px}
+.ig .cap{font-size:13.5px;line-height:1.4;margin-top:3px;color:#222}
+.ig .saved{position:absolute;left:-70px;bottom:60px;transform:rotate(-5deg)}
+.lc{width:360px;padding:22px;transform:rotate(-3deg)}
+.plan{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:440px;transform:rotate(2deg)}
+.day{background:#fff;border:1px solid #eee;border-radius:22px;padding:14px;box-shadow:var(--sh)}
+.day h4{margin:0 0 10px;font-size:13px;color:var(--coral);text-transform:uppercase;letter-spacing:.08em}
+.pchip{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 10px;margin-bottom:8px;font-weight:700;font-size:14px}
+.pchip:last-child{margin:0}
+.pchip small{margin-left:auto;font-size:11px;color:var(--muted)}
+.strip{position:relative;width:440px;height:360px}
+.strip .pol{cursor:default;width:170px;transition:transform .3s}
+.strip .pol:hover{transform:rotate(0) scale(1.08)!important;z-index:5}
+/* kapanış */
+.final{padding:140px 0 100px;text-align:center}
+.final .appicon{width:110px;height:110px;margin-bottom:10px}
+.final h2{font-size:clamp(48px,9vw,110px)}
+.final p{font-size:19px;color:var(--muted);margin:0 0 30px}
+.getapp{display:flex;flex-direction:column;align-items:center;gap:22px}
+.appstore{display:inline-flex;align-items:center;gap:10px;background:#000;color:#fff;text-decoration:none;border:1px solid #a6a6a6;border-radius:13px;padding:10px 22px 10px 16px;transition:transform .2s}
+.appstore:hover{transform:translateY(-2px)}
+.appstore svg{width:34px;height:34px;fill:#fff;flex:none}
+.appstore span{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05;white-space:nowrap}
+.appstore small{font-size:13px;font-weight:500;letter-spacing:.1px;margin-bottom:3px}
+.appstore b{font-size:27px;font-weight:600;letter-spacing:-.5px}
+footer{padding:40px 0 60px;color:var(--muted);font-size:14px;display:flex;justify-content:center;gap:22px;flex-wrap:wrap}
+@media(max-width:900px){
+ .hero{grid-template-columns:minmax(0,1fr);padding-top:100px;gap:10px}
+ .heroart{height:440px;margin-top:40px}.hero .pol{width:110px}
+ .feat,.feat.rev{grid-template-columns:minmax(0,1fr);gap:34px;padding:70px 0}
+ .feat.rev .txt{order:0}
+ .art,.feat.rev .art{flex-direction:column;align-items:center;padding:0}
+ .phone{width:240px;border-radius:42px;padding:8px}.screen{border-radius:34px}
+ .float,.feat.rev .float{position:relative;left:auto;right:auto;bottom:auto;transform:scale(.72);transform-origin:top center;margin:-30px 0 -90px}
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #17110f; --surface: #211816; --fg: #f4ebe7; --muted: #b19d96;
-    --line: #3a2c28; --accent: #f06a52; --accent-soft: #3a211b; color-scheme: dark;
-  }
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}h1 .w,.reveal,.reveal .float,.drop{opacity:1!important;transform:none!important;translate:none!important}}
+.insta-link{display:inline-flex;align-items:center;gap:5px;color:#b9aaa5;font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap;transition:color .2s}.insta-link:hover{color:var(--ink)}.insta-link .ic{display:none;width:21px;height:21px}.insta-link .ar{width:13px;height:13px}
+@media(max-width:600px){.insta-link{color:var(--ink)}.insta-link .ic{display:block}.insta-link .t,.insta-link .ar{display:none}}
+.langs{display:inline-flex;gap:14px;font-weight:700;font-size:15px}.langs a{text-decoration:none;color:#b9aaa5}.langs a.on{color:var(--ink)}.langs a:hover{color:var(--ink)}
+
+/* telefon: mockup tam ortada, kartlar ortaya göre konumlanır (her genişlikte telefona yakın) */
+@media(max-width:900px){
+ main .feat .art,main .feat.rev .art{flex-direction:row;align-items:flex-start;justify-content:center;padding:0;position:relative}
+ main .feat .art .phone{width:190px;border-radius:34px;padding:7px;margin:0}
+ main .feat .art .screen{border-radius:29px}
+ main .feat .art .float,main .feat.rev .art .float{position:absolute;top:auto;bottom:24px;right:auto;left:calc(50% + 20px);margin:0;transform:rotate(2deg) scale(.5);transform-origin:bottom left}
+ main .feat.rev .art .float{left:auto;right:calc(50% + 20px);transform:rotate(-2deg) scale(.5);transform-origin:bottom right}
+ main .feat .art .float:has(.plan),main .feat .art .float:has(.strip){transform:scale(.42)}
+ main .feat.rev .art .float:has(.plan),main .feat.rev .art .float:has(.strip){transform:scale(.42)}
+ main .feat .art.center .phone{width:190px}
+ main .feat .art .float.fr{left:auto;right:calc(50% + 30px);top:6%;bottom:auto;transform:rotate(-3deg) scale(.55);transform-origin:top right}
+ main .feat .art .float.fk{right:auto;left:calc(50% + 30px);bottom:4%;top:auto;transform:rotate(3deg) scale(.55);transform-origin:bottom left}
 }
-:root[data-theme="dark"] {
-  --bg: #17110f; --surface: #211816; --fg: #f4ebe7; --muted: #b19d96;
-  --line: #3a2c28; --accent: #f06a52; --accent-soft: #3a211b; color-scheme: dark;
 }
-body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.6; }
-.wrap { max-width: 680px; margin: 0 auto; padding-block: 40px 64px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
-.brand svg { width: 34px; height: 34px; flex: none; }
-.lang { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
-.lang button, .tabs a { font: inherit; font-weight: 600; font-size: 14px; border: 0; background: none; color: var(--muted); cursor: pointer; text-decoration: none; }
-.lang button { padding: 6px 14px; border-radius: 999px; }
-.lang button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
-.tabs { display: flex; gap: 24px; margin-top: 36px; border-bottom: 1px solid var(--line); }
-.tabs a { padding: 10px 0; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-.tabs a[aria-current="page"] { color: var(--fg); border-color: var(--accent); }
-button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-h1 { font-size: clamp(28px, 6vw, 36px); line-height: 1.15; letter-spacing: -0.03em; margin: 32px 0 8px; text-wrap: balance; }
-h2 { font-size: 17px; margin: 28px 0 4px; letter-spacing: -0.01em; }
-p, li { margin: 0 0 10px; max-width: 65ch; }
-.lead { color: var(--muted); margin-bottom: 8px; }
-.meta { color: var(--muted); font-size: 14px; }
-.contact { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
-.contact .label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; width: 100%; }
-.mail { font-weight: 700; font-size: 18px; user-select: all; word-break: break-all; }
-.copy { font: inherit; font-size: 14px; font-weight: 600; color: var(--accent); background: var(--accent-soft); border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer; }
-.faq dt { font-weight: 700; margin-top: 20px; }
-.faq dd { margin: 4px 0 0; color: var(--fg); max-width: 65ch; }
-ol { padding-left: 20px; }
-footer { margin-top: 48px; color: var(--muted); font-size: 13px; }
-[data-l] { display: none; }
-html[lang="tr"] [data-l="tr"], html[lang="en"] [data-l="en"] { display: revert; }
+
+/* masaüstü: kart telefonun hemen yanında dursun (sütunun öbür ucunda değil) */
+@media(min-width:901px){
+ main .feat .art .float:not(.fr):not(.fk){left:236px;right:auto;transform-origin:bottom left}
+ main .feat.rev .art .float:not(.fr):not(.fk){right:236px;left:auto;transform-origin:bottom right}
+}
+
+/* telefon: giriş butonu görsellerin altında */
+@media(max-width:900px){
+ .hero{display:flex;flex-direction:column;align-items:stretch}
+ .hero .txt{display:contents}
+ .hero h1{order:1}.hero .lead{order:2;margin-bottom:0}
+ .hero .heroart{order:3;width:100%}
+}
+
+/* plan: 1. gün solda, 2. gün sağda, telefonun iki yanında */
+main .feat .art .float.duo,main .feat.rev .art .float.duo{position:absolute;left:0;right:0;top:auto;bottom:60px;margin:0;transform:none!important}
+.float.duo .plan{display:flex;justify-content:space-between;width:100%;max-width:640px;margin:0 auto;transform:none;gap:0}
+.float.duo .day{width:220px;transform:rotate(-4deg) scale(.95)}
+.float.duo .day+.day{transform:rotate(4deg) scale(.95);margin-top:-90px}
+@media(max-width:900px){
+ main .feat .art .float.duo{bottom:40px}
+ .float.duo .day{width:170px;transform:rotate(-4deg) scale(.72);transform-origin:bottom left}
+ .float.duo .day+.day{transform:rotate(4deg) scale(.72);transform-origin:bottom right;margin-top:-70px}
+ .float.duo .plan{margin:0 -10px;width:auto}
+}
+
+/* anılar: polaroidler 2 solda 2 sağda */
+main .feat .art .float.duo2,main .feat.rev .art .float.duo2{position:absolute;inset:0;margin:0;transform:none!important}
+.float.duo2 .strip{width:100%;height:100%;max-width:680px;margin:0 auto}
+.float.duo2 .strip .pol{width:170px}
+.float.duo2 .strip .pol:nth-child(1){left:0!important;top:8%!important;transform:rotate(-7deg)!important}
+.float.duo2 .strip .pol:nth-child(2){left:auto!important;right:0!important;top:14%!important;transform:rotate(6deg)!important}
+.float.duo2 .strip .pol:nth-child(3){left:4%!important;top:50%!important;transform:rotate(5deg)!important}
+.float.duo2 .strip .pol:nth-child(4){left:auto!important;right:3%!important;top:56%!important;transform:rotate(-5deg)!important}
+@media(max-width:900px){.float.duo2 .strip .pol{width:96px;padding:5px 5px 22px}.float.duo2 .strip .pol span{font-size:14px;bottom:3px}}
+@media(max-width:900px){
+ .float.duo .plan{margin:0;padding:0 2px}
+ .float.duo .day{width:190px;transform:rotate(-4deg) scale(.6)}
+ .float.duo .day+.day{transform:rotate(4deg) scale(.6)}
+}
+
+.float.duo .plan{align-items:flex-start}
+.float.duo .day+.day{margin-top:-40px}
+@media(min-width:901px){.float.duo2 .strip .pol{width:140px}.float.duo2 .strip{max-width:560px}}
+@media(max-width:900px){.float.duo .plan{padding:0 10px}.float.duo .day+.day{margin-top:-30px}}
+
+/* telefon: mockup kartın karşı tarafına biraz kayar, ikili ortada dengeli dursun */
+@media(max-width:900px){
+ main .feat:not(.rev) .art:not(.center) .phone{transform:translateX(-44px)}
+ main .feat.rev .art:not(.center) .phone{transform:translateX(80px)}
+}
 </style>
-<style>*{box-sizing:border-box}body{margin:0}</style>
 </head>
 <body>
+<header class="bar"><div class="barin">
+ <a class="logo" href="#"><img src="pinlio-mark.png" alt="">Pinlio</a>
+ <div class="right"><span class="langs"><a href="#" data-set-lang="tr">TR</a><a href="#" data-set-lang="en">EN</a></span><a class="insta-link" href="https://instagram.com/pinlio.app" target="_blank" rel="noopener" aria-label="Instagram @pinlio.app"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r=".6" fill="currentColor" stroke="none"/></svg><span class="t">Instagram</span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a><a class="store" href="https://apps.apple.com/app/id6830555330"><svg viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.2-.8C6.5 7.2 5 8.2 4.2 9.7c-1.7 3-.4 7.3 1.2 9.7.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.3 1.3-2.7 1.3-2.7s-2.5-1-2.5-4.1zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.5 2.8-1.3z"/></svg><span data-en="Get">İndir</span></a></div>
+</div></header>
 
+<svg id="route" aria-hidden="true"><path id="routePath" d=""/><g id="tip"><circle r="10" fill="#fff" stroke="#e8543a" stroke-width="5"/></g></svg>
 
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M14 9a8 8 0 0 1 8 8c0 6-8 14-8 14S6 23 6 17a8 8 0 0 1 8-8z" fill="#f6d27a"/><circle cx="14" cy="17" r="3" fill="#e8543a"/><path d="M26 6a9 9 0 0 1 9 9c0 7-9 16-9 16s-9-9-9-16a9 9 0 0 1 9-9z" fill="#e8543a"/><circle cx="26" cy="15" r="3.4" fill="#fff"/></svg>
-      Pinlio
-    </div>
-    <div class="lang" role="group" aria-label="Dil / Language">
-      <button id="btn-tr" type="button" data-set="tr">Türkçe</button>
-      <button id="btn-en" type="button" data-set="en">English</button>
-    </div>
-  </header>
+<main class="wrap">
+ <section class="hero" id="hero">
+  <div class="txt">
+   <h1><span class="w" style="animation-delay:.05s" data-en="Save.">Kaydet.</span><br><span class="w" style="animation-delay:.2s" data-en="Share.">Paylaş.</span><br><span class="w" style="animation-delay:.35s" data-en="&lt;em&gt;Go.&lt;/em&gt;"><em>Git.</em></span></h1>
+   <p class="lead" data-en="That café you saved on Instagram and forgot, the cove your friend swore by, the city you keep saying “someday” to… Pinlio puts them all on one map and plans your trip day by day.">Instagram'da kaydedip unuttuğun o kafe, arkadaşının "mutlaka git" dediği o koy, bir gün diye ertelediğin o şehir… Pinlio hepsini tek haritada toplar, gezini gün gün planlar.</p>
+  </div>
+  <div class="heroart">
+   <div class="card hcard"><h3 data-en="✈️ Rome Trip">✈️ Roma Tatili</h3><small data-en="16 places · 3 people">16 yer · 3 kişi</small><div class="rows"><div class="row">🏛️ Pantheon<span class="who">Cansu</span></div><div class="row">🍝 Da Enzo al 29<span class="who">Uğur</span></div><div class="row">🍸 Di Rienzo<span class="who">Ceren</span></div></div><div class="mfaces"><i class="f1">C</i><i class="f2">U</i><i class="f3">C</i></div></div>
+   <figure class="pol fl" data-r="-8" data-s=".12" style="left:0;top:0"><img src="img/kapadokya.jpg" alt=""><span data-en="Cappadocia">Kapadokya</span></figure>
+   <figure class="pol fl" data-r="7" data-s=".2" style="right:0;top:4%"><img src="img/roma.jpg" alt=""><span data-en="Rome">Roma</span></figure>
+   <figure class="pol fl" data-r="5" data-s=".08" style="right:2%;bottom:0"><img src="img/pizza.jpg" alt=""><span data-en="pizza break">pizza molası</span></figure>
+   <figure class="pol fl" data-r="-6" data-s=".16" style="left:2%;bottom:-5%"><img src="img/bodrum.jpg" alt=""><span>Bodrum</span></figure>
+   <div class="saved"><span class="dot">☕️</span><span><span data-en="Added to Coffee Breaks">Kahve Molası'na eklendi</span><b data-en="Kadıköy · 1 min ago">Kadıköy · 1 dk önce</b></span></div>
+   <img class="drop" src="pinlio-mark.png" alt="" style="left:44%;top:6%;animation-delay:.9s">
+   <img class="drop" src="pinlio-mark.png" alt="" style="right:2%;top:52%;animation-delay:1.15s;width:24px">
+   <img class="drop" src="pinlio-mark.png" alt="" style="left:6%;top:48%;animation-delay:1.4s;width:24px">
+  </div>
+ </section>
 
-  <nav class="tabs" aria-label="Bölümler">
-    <a href="#destek" id="tab-support"><span data-l="tr">Destek</span><span data-l="en">Support</span></a>
-    <a href="#gizlilik" id="tab-privacy"><span data-l="tr">Gizlilik Politikası</span><span data-l="en">Privacy Policy</span></a>
-  </nav>
+ <section class="feat reveal" id="nasil" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="Save">Kaydet</span>
+   <h2 data-en="Spotted it?&lt;br&gt;&lt;em&gt;Save it.&lt;/em&gt;">Gördün mü?<br><em>Kaydet.</em></h2>
+   <p data-en="On Instagram, tap Share on a post and pick Pinlio, or just search the place. It lands in your list with the post&#x27;s link right beside it.">Instagram'da gönderide Paylaş'a dokun, Pinlio'yu seç ya da mekânı ara. Listene düşer, gönderinin bağlantısı da yanında durur.</p>
+   <span class="note" data-en="no more places buried in your saved folder">kaydedilenler klasörüne gömülmek yok</span>
+  </div>
+  <div class="art">
+   <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-src="video/kaydet.mp4" poster="video/kaydet.jpg" data-src-en="video/kaydet-en.mp4" data-poster-en="video/kaydet-en.jpg"></video></div></div><div class="float"><div class="ig"><div class="top"><span class="av"><i style="background-image:url('img/flore-v2.jpg')"></i></span><span class="who"><b>paris.defteri</b><small data-en="Café de Flore, Paris">Café de Flore, Paris</small></span><span class="more">•••</span></div><img src="img/flore-v2.jpg" alt=""><div class="acts"><span class="l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.1 4.5c2 0 3.6 1.1 4.9 3 1.3-1.9 2.9-3 4.9-3 3.2 0 5.5 3.1 4.3 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 16.9A9 9 0 1 0 17 20.4L21.5 21.5z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3 9.2 10.1M22 3l-7 18-3-8.5L3 9.5z"/></svg></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5.5L5 21V3.5h14z"/></svg></div><div class="likes" data-en="2,417 likes">2.417 beğenme</div><div class="cap" data-en="&lt;b&gt;paris.defteri&lt;/b&gt; Paris mornings start at Café de Flore ☕️🥐 save it, go later"><b>paris.defteri</b> Paris'te sabahlar Café de Flore'da başlar ☕️🥐 kaydet, sonra gidersin</div></div></div>
+  </div>
+ </section>
 
-  <!-- DESTEK -->
-  <section id="view-support">
-    <div data-l="tr">
-      <h1>Nasıl yardımcı olabiliriz?</h1>
-      <p class="lead">Pinlio, gitmek istediğin yerleri kaydettiğin ve arkadaşlarınla gezi planladığın bir iPhone uygulaması. Soru, öneri ya da hata bildirimi için e-posta gönderebilirsin; genelde 2 iş günü içinde dönüyoruz.</p>
-    </div>
-    <div data-l="en">
-      <h1>How can we help?</h1>
-      <p class="lead">Pinlio is an iPhone app for saving the places you want to visit and planning trips with friends. Send us an email with questions, ideas or bug reports; we usually reply within 2 business days.</p>
-    </div>
+ <section class="feat rev reveal" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="Map">Harita</span>
+   <h2 data-en="All on&lt;br&gt;&lt;em&gt;one map.&lt;/em&gt;">Hepsi tek<br><em>haritada.</em></h2>
+   <p data-en="Every place in your list is a pin on the map. Tap one to see its note and photos, then get directions in Apple or Google Maps with one tap. You can add your own notes and photos to every place, too.">Listendeki her yer haritada bir pin. Dokun, notu ve fotoğrafları açılsın; oradan tek dokunuşla Apple ya da Google Haritalar'da yol tarifi al. Her yere kendi notunu ve fotoğrafını da ekleyebilirsin.</p>
+   <span class="note" data-en="no more “which one was close?”">“hangisi yakındı?” sorusu bitti</span>
+  </div>
+  <div class="art">
+   <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-src="video/harita.mp4" poster="video/harita.jpg" data-src-en="video/harita-en.mp4" data-poster-en="video/harita-en.jpg"></video></div></div><div class="float"><div class="card pincard"><div class="ptop"><span class="dot">🍝</span><span><b>Da Enzo al 29</b><small data-en="Trastevere · Food &amp;amp; drink">Trastevere · Yeme &amp; içme</small></span></div><p class="pnote" data-en="“The cacio e pepe here is legendary.”">“Cacio e pepe burada efsane.”</p><span class="go">➤ <span data-en="Directions">Yol tarifi</span></span></div></div>
+  </div>
+ </section>
 
-    <div class="contact">
-      <span class="label"><span data-l="tr">E-posta</span><span data-l="en">Email</span></span>
-      <span class="mail" id="mail">pinlio.app@icloud.com</span>
-      <button class="copy" id="copy" type="button"><span data-l="tr">Kopyala</span><span data-l="en">Copy</span></button>
-    </div>
+ <section class="feat reveal" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="Lists">Listeler</span>
+   <h2 data-en="Two kinds of lists:&lt;br&gt;&lt;em&gt;Route &amp;amp; Explore.&lt;/em&gt;">İki tür liste:<br><em>Rota ve Keşif.</em></h2>
+   <p data-en="Start a Route for a trip: nearby places fall on the same day and the plan builds itself. Start an Explore list for the cafés, museums and sunset spots you&#x27;ll get to over time, and tick them off as you go.">Bir tatil için Rota aç: yakın yerler aynı güne düşer, plan kendiliğinden çıkar. Zamanla gideceğin kafeler, müzeler, gün batımı noktaları için Keşif aç; gittikçe işaretle.</p>
+   
+  </div>
+  <div class="art center">
+   <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-src="video/listeler.mp4" poster="video/listeler.jpg" data-src-en="video/listeler-en.mp4" data-poster-en="video/listeler-en.jpg"></video></div></div><div class="float fr"><div class="lcol"><span class="ltag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="18" r="2.6"/><circle cx="18" cy="6" r="2.6"/><path d="M8.6 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.4"/></svg><span data-en="Route">Rota</span></span>
+  <div class="li"><span class="le">✈️</span><span class="lt"><b data-en="Rome Trip">Roma Tatili</b><small data-en="3 days · 16 places">3 gün · 16 yer</small></span></div>
+  <div class="li"><span class="le">🥐</span><span class="lt"><b data-en="3 Days in Paris">Paris'te 3 gün</b><small data-en="3 days · 12 places">3 gün · 12 yer</small></span></div>
+  <div class="li"><span class="le">🎈</span><span class="lt"><b data-en="2 Days in Cappadocia">Kapadokya'da 2 gün</b><small data-en="2 days · 9 places">2 gün · 9 yer</small></span></div>
+ </div></div><div class="float fk"><div class="lcol"><span class="ltag k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M3.5 16 5.6 6.4A2 2 0 0 1 9.5 6.6V8h5V6.6a2 2 0 0 1 3.9-.2L20.5 16"/><circle cx="6.5" cy="16.5" r="3.5"/><circle cx="17.5" cy="16.5" r="3.5"/><path d="M10 16.5h4"/></svg><span data-en="Explore">Keşif</span></span>
+  <div class="li"><span class="le">☕</span><span class="lt"><b data-en="Coffee Breaks">Kahve Molası</b><small data-en="5/12 visited">5/12 gidildi</small><span class="prog"><i style="width:42%"></i></span></span></div>
+  <div class="li"><span class="le">🍳</span><span class="lt"><b data-en="Breakfast Spots">Kahvaltı Yerleri</b><small data-en="3/8 visited">3/8 gidildi</small><span class="prog"><i style="width:38%"></i></span></span></div>
+  <div class="li"><span class="le">🌅</span><span class="lt"><b data-en="Sunset Spots">Gün batımı noktaları</b><small data-en="2/6 visited">2/6 gidildi</small><span class="prog"><i style="width:33%"></i></span></span></div>
+ </div></div>
+  </div>
+ </section>
 
-    <dl class="faq" data-l="tr">
-      <dt>Hesap açmam gerekiyor mu?</dt>
-      <dd>Hayır. Pinlio iCloud hesabınla çalışır. Listelerin iCloud'da saklanır ve cihazların arasında eşitlenir. iPhone'da iCloud'a giriş yapmış olman yeterli.</dd>
-      <dt>Arkadaşlarım listeme nasıl katılır?</dt>
-      <dd>Listeyi aç, sağ üstteki kişi simgesine dokun ve davet bağlantısını WhatsApp ya da Mesajlar'dan gönder. Bağlantıyı açan kişi listeye katılır ve yer, not ve fotoğraf ekleyebilir.</dd>
-      <dt>Instagram'da gördüğüm bir yeri nasıl eklerim?</dt>
-      <dd>Yer eklerken "Instagram'da mı gördün?" kutusuna gönderinin bağlantısını yapıştır. Sonra yerin kartından tek dokunuşla gönderiye dönebilirsin.</dd>
-      <dt>Gün gün plan nasıl oluşturulur?</dt>
-      <dd>Planlarım sekmesinde + simgesine dokun ve bir Rota listesi seç. Pinlio yakın yerleri aynı güne toplar ve en kısa sıraya dizer.</dd>
-      <dt>Listelerim başka cihazımda görünmüyor.</dt>
-      <dd>İki cihazda da aynı Apple ID ile iCloud'a giriş yaptığından ve Ayarlar › [adın] › iCloud bölümünde iCloud Drive'ın açık olduğundan emin ol. Eşitleme birkaç dakika sürebilir.</dd>
-      <dt>Verilerimi nasıl silerim?</dt>
-      <dd>Listeleri ve yerleri uygulamadan silebilirsin. iCloud'daki verilerin tamamı için: iPhone Ayarlar › [adın] › iCloud › Depolama Alanını Yönet › Pinlio.</dd>
-    </dl>
-    <dl class="faq" data-l="en">
-      <dt>Do I need an account?</dt>
-      <dd>No. Pinlio works with your iCloud account. Your lists are stored in iCloud and sync across your devices. Just be signed in to iCloud on your iPhone.</dd>
-      <dt>How do friends join my list?</dt>
-      <dd>Open the list, tap the person icon at the top right and send the invite link through WhatsApp or Messages. Anyone who opens the link joins the list and can add places, notes and photos.</dd>
-      <dt>How do I add a place I saw on Instagram?</dt>
-      <dd>When adding a place, paste the post link into the "Saw it on Instagram?" box. You can then jump back to the post from the place card in one tap.</dd>
-      <dt>How do I make a day-by-day plan?</dt>
-      <dd>In the My Plans tab, tap + and pick a Route list. Pinlio groups nearby places into the same day and puts them in the shortest order.</dd>
-      <dt>My lists don't show on my other device.</dt>
-      <dd>Make sure both devices are signed in to iCloud with the same Apple ID and iCloud Drive is on in Settings › [your name] › iCloud. Syncing can take a few minutes.</dd>
-      <dt>How do I delete my data?</dt>
-      <dd>You can delete lists and places in the app. To remove everything from iCloud: iPhone Settings › [your name] › iCloud › Manage Storage › Pinlio.</dd>
-    </dl>
-  </section>
+ <section class="feat rev reveal" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="Share">Paylaş</span>
+   <h2 data-en="One link,&lt;br&gt;&lt;em&gt;three friends.&lt;/em&gt;">Bir link,<br><em>üç arkadaş.</em></h2>
+   <p data-en="Send your list on WhatsApp and everyone can add places, notes and photos. You can see who added what, so “I told you so” comes with proof.">Listeni WhatsApp'tan gönder, herkes yer, not ve fotoğraf eklesin. Kimin neyi eklediği belli; "ben demiştim" kanıtlı.</p>
+   
+  </div>
+  <div class="art">
+   <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-src="video/paylas.mp4" poster="video/paylas.jpg" data-src-en="video/paylas-en.mp4" data-poster-en="video/paylas-en.jpg"></video></div></div><div class="float"><div class="card lc"><h3 data-en="✈️ Rome Trip">✈️ Roma Tatili</h3><small data-en="16 places · 3 people">16 yer · 3 kişi</small><div class="row">🏛️ Pantheon<span class="who">Cansu</span></div><div class="row">🍝 Da Enzo al 29<span class="who">Uğur</span></div><div class="row">🍸 Di Rienzo<span class="who">Ceren</span></div><div class="mfaces"><i class="f1">C</i><i class="f2">U</i><i class="f3">C</i></div></div></div>
+  </div>
+ </section>
 
-  <!-- GİZLİLİK -->
-  <section id="view-privacy" hidden>
-    <div data-l="tr">
-      <h1>Gizlilik Politikası</h1>
-      <p class="meta">Son güncelleme: 14 Kasım 2026</p>
-      <p>Pinlio, Cansu Gürsoy tarafından geliştirilen bir gezi listesi uygulamasıdır. Bu metin, uygulamanın verilerinle ne yaptığını anlatır.</p>
-      <h2>Topladığımız veriler</h2>
-      <p>Pinlio senden hiçbir kişisel veri toplamaz. Kendi sunucumuz yoktur; analiz, reklam ya da izleme aracı kullanılmaz. Hesap açman gerekmez.</p>
-      <h2>Verilerin nerede saklanır</h2>
-      <p>Listelerin, yerlerin, notların ve fotoğrafların cihazında ve Apple'ın iCloud hizmeti üzerinden kendi iCloud hesabında saklanır. Bu verilere geliştirici olarak erişemeyiz. iCloud'un verileri nasıl koruduğu Apple'ın gizlilik politikasına tabidir.</p>
-      <h2>Ortak listeler</h2>
-      <p>Bir listeyi paylaştığında, bağlantıyı alan kişiler o listedeki yerleri, notları, fotoğrafları ve Ayarlar'da yazdığın ismi görebilir ve listeye ekleme yapabilir. Paylaşımı istediğin zaman durdurabilirsin.</p>
-      <h2>Konum</h2>
-      <p>İzin verirsen konumun yalnızca haritada nerede olduğunu göstermek ve planını bulunduğun yerden başlatmak için cihazında kullanılır. Konumun saklanmaz ve kimseyle paylaşılmaz.</p>
-      <h2>Fotoğraflar</h2>
-      <p>Yalnızca senin seçtiğin fotoğraflar uygulamaya eklenir. Uygulama fotoğraf arşivinin geri kalanına erişmez.</p>
-      <h2>Yer aramaları</h2>
-      <p>Yer ararken yazdıkların sonuç bulmak için Apple Haritalar'a gönderilir.</p>
-      <h2>Verilerini silmek</h2>
-      <p>Bir listeyi ya da yeri uygulamadan silebilirsin. Uygulamayı silmek cihazdaki verileri kaldırır; iCloud'daki verileri iPhone Ayarlar › [adın] › iCloud › Depolama Alanını Yönet bölümünden silebilirsin.</p>
-      <h2>Çocuklar</h2>
-      <p>Pinlio çocuklardan bilerek veri toplamaz.</p>
-      <h2>Değişiklikler</h2>
-      <p>Bu politika değişirse güncel hali bu sayfada yayımlanır.</p>
-      <h2>İletişim</h2>
-      <p>pinlio.app@icloud.com</p>
-    </div>
-    <div data-l="en">
-      <h1>Privacy Policy</h1>
-      <p class="meta">Last updated: November 14, 2026</p>
-      <p>Pinlio is a travel list app made by Cansu Gürsoy. This page explains what the app does with your data.</p>
-      <h2>Data we collect</h2>
-      <p>Pinlio does not collect any personal data. We have no servers of our own and use no analytics, advertising or tracking tools. You don't need an account.</p>
-      <h2>Where your data is stored</h2>
-      <p>Your lists, places, notes and photos are stored on your device and in your own iCloud account through Apple's iCloud service. We cannot access this data. How iCloud protects your data is covered by Apple's privacy policy.</p>
-      <h2>Shared lists</h2>
-      <p>When you share a list, people with the link can see its places, notes, photos and the name you set in Settings, and can add to the list. You can stop sharing at any time.</p>
-      <h2>Location</h2>
-      <p>If you allow it, your location is used on your device only to show where you are on the map and to start your plan from where you are. It is not stored or shared.</p>
-      <h2>Photos</h2>
-      <p>Only the photos you pick are added to the app. The app does not access the rest of your photo library.</p>
-      <h2>Place search</h2>
-      <p>What you type when searching for a place is sent to Apple Maps to find results.</p>
-      <h2>Deleting your data</h2>
-      <p>You can delete lists and places in the app. Deleting the app removes data on your device; you can delete iCloud data in iPhone Settings › [your name] › iCloud › Manage Storage.</p>
-      <h2>Children</h2>
-      <p>Pinlio does not knowingly collect data from children.</p>
-      <h2>Changes</h2>
-      <p>If this policy changes, the current version will be published on this page.</p>
-      <h2>Contact</h2>
-      <p>pinlio.app@icloud.com</p>
-    </div>
-  </section>
+ <section class="feat reveal" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="Plan">Plan</span>
+   <h2 data-en="Scattered pins,&lt;br&gt;&lt;em&gt;day by day.&lt;/em&gt;">Dağınık pinler,<br><em>gün gün plan.</em></h2>
+   <p data-en="Nearby places land on the same day in the shortest order. Breakfast goes to the morning, cocktails to the evening, all on their own.">Yakın yerler aynı güne toplanır, en kısa sıraya dizilir. Kahvaltı sabaha, kokteyl akşama kendiliğinden yerleşir.</p>
+   
+  </div>
+  <div class="art center">
+   <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-src="video/planla.mp4" poster="video/planla.jpg" data-src-en="video/planla-en.mp4" data-poster-en="video/planla-en.jpg"></video></div></div><div class="float duo"><div class="plan"><div class="day"><h4 data-en="Day 1">1. Gün</h4><div class="pchip">☀️ Roscioli Caffè<small>09:00</small></div><div class="pchip">🏛️ Pantheon<small>10:30</small></div><div class="pchip">🍝 Da Enzo<small>13:00</small></div></div><div class="day"><h4 data-en="Day 2">2. Gün</h4><div class="pchip">⛲ Trevi<small>10:00</small></div><div class="pchip">🍦 Giolitti<small>16:00</small></div><div class="pchip">🍸 Di Rienzo<small>20:00</small></div></div></div></div>
+  </div>
+ </section>
 
-  <footer>© 2026 Cansu Gürsoy · Pinlio</footer>
-</div>
+  <section class="feat rev reveal" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="On the day">Gezi günü</span>
+   <h2 data-en="On the day,&lt;br&gt;&lt;em&gt;your next stop is ready.&lt;/em&gt;">Gezi günü,<br><em>sıradaki durak hazır.</em></h2>
+   <p data-en="Your plan for the day waits on the home screen: the next stop and directions, one tap away. Tick off where you’ve been and the next one steps up.">Ana sayfada o günün planı seni bekler: sıradaki durak ve yol tarifi tek dokunuşta. Gittiğin yeri işaretle, sıradaki kendiliğinden gelsin.</p>
+   <span class="note" data-en="← try it: tap a circle">← dene: yuvarlağa dokun</span>
+  </div>
+  <div class="art">
+   <div class="phone"><div class="screen"><video muted loop playsinline preload="none" data-src="video/bugun.mp4" poster="video/bugun.jpg" data-src-en="video/bugun-en.mp4" data-poster-en="video/bugun-en.jpg"></video></div></div>
+   <div class="float"><div class="card today" id="today"></div></div>
+  </div>
+ </section>
+
+ <section class="feat reveal" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="Where to?">Nereye gidelim?</span>
+   <h2 data-en="Can&#x27;t&lt;br&gt;&lt;em&gt;decide?&lt;/em&gt;">Kararsız mı<br><em>kaldın?</em></h2>
+   <p data-en="In a long Explore list, tap “Where should we go?”. The places you haven&#x27;t been spin by and one gets picked. Debate over, off you go.">Kalabalık bir Keşif listesinde “Nereye gidelim?”e dokun. Gitmediğin yerler hızla döner, biri seçilir. Tartışma biter, yola çıkılır.</p>
+   <span class="note" data-en="go on, give it a spin →">hadi, sen de bir dene →</span>
+  </div>
+  <div class="art">
+   <div class="card slot" id="slot">
+   <div class="stop2">☕ <span data-en="Coffee Breaks">Kahve Molası</span></div>
+   <h3 data-en="Where should we go?">Nereye gidelim?</h3>
+   <div class="win"><span class="pin">📍</span><span class="name" id="slotname">Kronotrop</span></div>
+   <p class="sub" data-en="How about this one today?">Bugün buraya ne dersin?</p>
+   <button class="again" id="again" type="button">↻ <span data-en="Pick another">Başka seç</span></button>
+  </div>
+  </div>
+ </section>
+
+ <section class="feat rev reveal" data-stop>
+  <div class="txt">
+   <span class="kick" data-en="Memories">Anılar</span>
+   <h2 data-en="Trips end,&lt;br&gt;&lt;em&gt;memories stay.&lt;/em&gt;">Gezi biter,<br><em>anısı kalır.</em></h2>
+   <p data-en="Finished trips live on in Past with their photos. No more “what was that place called?” next time.">Biten geziler fotoğraflarıyla Geçmiş'te durur. Bir dahaki sefere "orası neydi ya?" diye düşünmek yok.</p>
+   
+  </div>
+  <div class="art center">
+   <div class="phone"><div class="screen"><img src="video/ani-s.jpg" data-src-en="video/ani-en-s.jpg" alt=""></div></div><div class="float duo2"><div class="strip"><figure class="pol" style="left:0;top:2%;transform:rotate(-7deg)"><img src="img/venedik.jpg" alt=""><span data-en="Venice">Venedik</span></figure><figure class="pol" style="left:40%;top:8%;transform:rotate(5deg)"><img src="img/floransa.jpg" alt=""><span data-en="Florence">Floransa</span></figure><figure class="pol" style="left:10%;top:42%;transform:rotate(6deg)"><img src="img/nice.jpg" alt=""><span>Nice</span></figure><figure class="pol" style="left:50%;top:46%;transform:rotate(-5deg)"><img src="img/milano2.jpg" alt=""><span data-en="Milan">Milano</span></figure></div></div>
+  </div>
+ </section>
+
+ <section class="final reveal" id="end" data-stop>
+  <img class="appicon" src="pinlio-mark.png" alt="">
+  <h2 data-en="Next stop:&lt;br&gt;&lt;em&gt;yours.&lt;/em&gt;">Sıradaki durak<br><em>senin.</em></h2>
+  <p data-en="Download free, start your first list, invite your friends.">Ücretsiz indir, ilk listeni aç, arkadaşlarını davet et.</p>
+  <div class="getapp">
+   <a class="appstore" href="https://apps.apple.com/app/id6830555330" aria-label="App Store"><svg viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.2-.8C6.5 7.2 5 8.2 4.2 9.7c-1.7 3-.4 7.3 1.2 9.7.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.3 1.3-2.7 1.3-2.7s-2.5-1-2.5-4.1zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.5 2.8-1.3z"/></svg><span data-en="&lt;small&gt;Download on the&lt;/small&gt;&lt;b&gt;App Store&lt;/b&gt;"><small>App Store'dan</small><b>İndirin</b></span></a>
+  </div>
+ </section>
+
+ <footer><a href="destek/index.html" data-en="Support">Destek</a><a href="destek/index.html#gizlilik" data-en="Privacy" data-en-href="destek/index.html#privacy">Gizlilik</a><a href="mailto:pinlio.app@icloud.com">pinlio.app@icloud.com</a><span>© 2026 Cansu Gürsoy</span></footer>
+</main>
 
 <script>
-(function () {
-  var root = document.documentElement;
-  function setLang(l) {
-    root.lang = l;
-    document.getElementById('btn-tr').setAttribute('aria-pressed', l === 'tr');
-    document.getElementById('btn-en').setAttribute('aria-pressed', l === 'en');
-    try { localStorage.setItem('pinlio-lang', l); } catch (e) {}
-  }
-  var saved = null;
-  try { saved = localStorage.getItem('pinlio-lang'); } catch (e) {}
-  var nav = (navigator.language || 'tr').toLowerCase();
-  setLang(saved || (nav.indexOf('tr') === 0 ? 'tr' : 'en'));
-  document.querySelectorAll('[data-set]').forEach(function (b) {
-    b.addEventListener('click', function () { setLang(b.getAttribute('data-set')); });
-  });
-
-  function route() {
-    var h = location.hash.replace('#', '');
-    var privacy = h === 'gizlilik' || h === 'privacy';
-    if (h === 'privacy') setLang('en');
-    if (h === 'support') setLang('en');
-    document.getElementById('view-privacy').hidden = !privacy;
-    document.getElementById('view-support').hidden = privacy;
-    document.getElementById('tab-privacy').setAttribute('aria-current', privacy ? 'page' : 'false');
-    document.getElementById('tab-support').setAttribute('aria-current', privacy ? 'false' : 'page');
-  }
-  window.addEventListener('hashchange', route);
-  route();
-
-  var btn = document.getElementById('copy');
-  btn.addEventListener('click', function () {
-    var text = document.getElementById('mail').textContent;
-    var done = function () { btn.firstElementChild.textContent = 'Kopyalandı'; btn.lastElementChild.textContent = 'Copied'; };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done, function () { selectMail(); });
-    } else { selectMail(); }
-  });
-  function selectMail() {
-    var r = document.createRange(); r.selectNodeContents(document.getElementById('mail'));
-    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-  }
+if(/^#(support|destek|gizlilik|privacy)$/.test(location.hash))location.replace("destek/index.html"+location.hash);
+(function(){
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Videolar ekrana gelince yüklenir ve oynar, çıkınca durur
+// EN kaydı varsa (data-src-en / data-poster-en) İngilizcede o oynar
+function pick(v){var en=document.documentElement.lang==="en";return(en&&v.dataset.srcEn)||v.dataset.src}
+function load(v){var want=pick(v);if(!want){if(v.getAttribute("src")){v.removeAttribute("src");v.load()}return}if(v.getAttribute("src")!==want){v.src=want;v.load()}}
+function relang(){var en=document.documentElement.lang==="en";if(typeof tdy!=="undefined"&&tdy)tdy.render();[].forEach.call(document.querySelectorAll(".screen img[data-src-en]"),function(i){if(!i.dataset.srcTr)i.dataset.srcTr=i.getAttribute("src");i.setAttribute("src",en?i.dataset.srcEn:i.dataset.srcTr)});[].forEach.call(document.querySelectorAll(".art video"),function(v){if(v.dataset.posterEn){if(!v.dataset.posterTr)v.dataset.posterTr=v.getAttribute("poster");v.setAttribute("poster",en?v.dataset.posterEn:v.dataset.posterTr)}if(v.getAttribute("src")){var playing=!v.paused;load(v);if(playing)go(v)}})}
+function go(v){v.muted=true;var p=v.play();if(p)p.catch(function(){pending.push(v)})}
+var pending=[];function kick(){var a=pending;pending=[];a.forEach(function(v){v.play().catch(function(){})})}
+["pointerdown","touchstart","keydown","scroll"].forEach(function(t){addEventListener(t,kick,{passive:true})});
+var vio=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){load(v);go(v)}else{v.pause()}})},{threshold:.3});
+[].forEach.call(document.querySelectorAll(".art video"),function(v){vio.observe(v)});
+// Bölümler belirince animasyon
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("in")})},{threshold:.25});
+[].forEach.call(document.querySelectorAll(".reveal"),function(el){io.observe(el)});
+// Polaroidler: kaydırınca kayar, sürüklenebilir
+var pols=[].slice.call(document.querySelectorAll(".fl"));
+pols.forEach(function(p){p.dx=0;p.dy=0;var sx,sy,ox,oy;
+ p.addEventListener("pointerenter",function(){p.classList.add("hover");place(p)});
+ p.addEventListener("pointerleave",function(){p.classList.remove("hover");place(p)});
+ p.addEventListener("pointerdown",function(e){p.setPointerCapture(e.pointerId);p.classList.add("dragging");sx=e.clientX;sy=e.clientY;ox=p.dx;oy=p.dy});
+ p.addEventListener("pointermove",function(e){if(!p.classList.contains("dragging"))return;p.dx=ox+e.clientX-sx;p.dy=oy+e.clientY-sy;place(p)});
+ p.addEventListener("pointerup",function(){p.classList.remove("dragging")})});
+function place(p){var y=(reduce||innerWidth<900)?0:window.scrollY,r=+p.dataset.r,h=p.classList.contains("hover");p.style.transform="translate("+p.dx+"px,"+(p.dy-y*+p.dataset.s-(h?10:0))+"px) rotate("+(h?-r*.3:r+y*.02*Math.sign(r))+"deg) scale("+(h?1.1:1)+")"}
+// Header: aşağı kaydırınca gizlenir, yukarı çekince geri gelir
+var bar=document.querySelector(".bar"),lastY=scrollY;
+addEventListener("scroll",function(){var y=scrollY;if(Math.abs(y-lastY)<6)return;bar.classList.toggle("hide",y>lastY&&y>80);lastY=y},{passive:true});
+// Bugün kartı: yuvarlağa dokununca durak işaretlenir, sıradaki gelir
+var tdy=(function(){var el=document.getElementById("today");if(!el)return null;
+ var stops=["Trastevere",{tr:"Vatikan Müzeleri",en:"Vatican Museums"},"Da Enzo al 29","Pompi Tiramisù",{tr:"Roma Forumu",en:"Roman Forum"}],i=0,busy=false;
+ function nm(x){return typeof x==="string"?x:(document.documentElement.lang==="en"?x.en:x.tr)}
+ function render(){var en=document.documentElement.lang==="en",h='<div class="thead"><span class="te">✈️</span><span><b>'+(en?"Rome Trip":"Roma Tatili")+'</b><small>'+(en?"Day 2 · 5 places":"2. Gün · 5 yer")+'</small></span></div>';
+  for(var k=i;k<Math.min(i+3,stops.length);k++)h+='<div class="tstop'+(k===i?' cur':'')+'"><span class="n">'+(k+2)+'</span><span class="nm">'+nm(stops[k])+'</span><button class="tick" type="button" aria-label="'+(en?"Mark visited":"Gittim")+'" data-k="'+k+'"></button></div>';
+  var left=stops.length-Math.min(i+3,stops.length);h+='<div class="tmore">'+(left>0?(en?"+"+left+" more stop"+(left>1?"s":""):"+"+left+" durak daha"):"&nbsp;")+'</div>';
+  h+='<div class="tnext">➤ <span>'+(i<stops.length?(en?"Next: ":"Sıradaki: ")+nm(stops[i]):(en?"Day done! 🎉":"Gün tamam! 🎉"))+'</span><b>'+(en?"Directions":"Yol tarifi")+'</b></div>';el.innerHTML=h}
+ el.addEventListener("click",function(e){var b=e.target.closest(".tick");if(!b||busy)return;var k=+b.dataset.k;if(k!==i)return;busy=true;var row=b.parentNode;row.classList.add("done");b.textContent="✓";
+  setTimeout(function(){row.classList.add("out");setTimeout(function(){i++;render();var n=el.querySelector(".tnext");n.classList.add("flash");busy=false;if(i>=stops.length)setTimeout(function(){i=0;render()},2200)},300)},450)});
+ render();return{render:render}})();
+// Nereye gidelim: isimler döner, biri seçilir
+(function(){
+ var names=["Fazıl Bey'in Türk Kahvesi","Montag Coffee Roasters","Kronotrop","Petra Roasting Co.","Walter's Coffee Roastery"],el=document.getElementById("slotname"),btn=document.getElementById("again"),busy=false,last=2;
+ function spin(){if(busy)return;busy=true;var w;do{w=Math.floor(Math.random()*names.length)}while(w===last);last=w;
+  if(reduce){el.textContent=names[w];busy=false;return}
+  var steps=14,i=0,k=w;(function step(){k=(k+1)%names.length;var done=i>=steps&&k===w;el.textContent=done?names[w]:names[k];el.className="name "+(done?"pop":"roll");void el.offsetWidth;
+   if(done){busy=false;return}i++;setTimeout(step,60+i*i*2.2)})()}
+ btn.addEventListener("click",spin);
+ var once=new IntersectionObserver(function(es){if(es[0].isIntersecting){spin();once.disconnect()}},{threshold:.6});once.observe(document.getElementById("slot"));
+})();
+// TR / EN
+var langLinks=document.querySelectorAll("[data-set-lang]"),curLang="tr";
+function setLang(l){curLang=l;document.documentElement.lang=l;
+ [].forEach.call(document.querySelectorAll("[data-en]"),function(e){if(e.dataset.tr===undefined)e.dataset.tr=e.innerHTML;e.innerHTML=l==="en"?e.dataset.en:e.dataset.tr});
+ [].forEach.call(document.querySelectorAll("[data-en-href]"),function(e){if(e.dataset.trHref===undefined)e.dataset.trHref=e.getAttribute("href");e.setAttribute("href",l==="en"?e.dataset.enHref:e.dataset.trHref)});
+ [].forEach.call(langLinks,function(a){a.classList.toggle("on",a.dataset.setLang===l)});
+ document.title=l==="en"?"Pinlio · Travel lists, together":"Pinlio · Gezi listelerin, birlikte";var md=document.getElementById("mdesc");if(md)md.setAttribute("content",l==="en"?"Collect the places you save on Instagram on one map, build shared travel lists with friends and plan your trip day by day. Free for iPhone.":"Instagram'da kaydettiğin yerleri tek haritada topla, arkadaşlarınla ortak gezi listeleri yap, gezini gün gün planla. iPhone için ücretsiz.");
+ try{localStorage.setItem("pinlio.lang",l)}catch(e){}
+ if(typeof build==="function")setTimeout(build,50);if(typeof relang==="function")relang()}
+[].forEach.call(langLinks,function(a){a.addEventListener("click",function(e){e.preventDefault();setLang(a.dataset.setLang)})});
+var startLang;try{startLang=localStorage.getItem("pinlio.lang")}catch(e){}
+if(!startLang){var q=new URLSearchParams(location.search).get("lang");startLang=q||((navigator.language||"").toLowerCase().indexOf("tr")===0?"tr":"en")}
+setLang(startLang);
+// Kartları telefonun yanına, telefonu kapatmadan yerleştir (her genişlikte)
+function fitCards(){
+ var narrow=innerWidth<=900,gap=-8;
+ [].forEach.call(document.querySelectorAll(".feat .art"),function(art){
+  var ph=art.querySelector(".phone");if(!ph)return;
+  var a=art.getBoundingClientRect(),p=ph.getBoundingClientRect(),vw=document.documentElement.clientWidth;
+  var L=narrow?(-a.left+6):0,R=Math.min(a.width+(narrow?0:0),vw-a.left-6);
+  var leftSpace=p.left-a.left-L-gap,rightSpace=a.left+R-p.right-gap,pt=p.top-a.top,phh=p.height;
+  function put(el,side,vpos,max,rot,dx){
+   el.style.setProperty("transform","none","important");var w=el.offsetWidth,h=el.offsetHeight;
+   var space=side==="r"?rightSpace:leftSpace,sc=Math.max(narrow?.5:.6,Math.min(max,space/w));
+   el.style.setProperty("position","absolute","important");el.style.setProperty("margin","0","important");
+   el.style.setProperty("right","auto","important");el.style.setProperty("bottom","auto","important");
+   var x=side==="r"?Math.min(p.right-a.left+gap,R-w*sc):Math.max(L,p.left-a.left-gap-w*sc);
+   var y=typeof vpos==="number"?pt+phh*vpos-h*sc/2:vpos==="top"?pt+phh*.08:vpos==="bot"?pt+phh*.92-h*sc:pt+phh*.5-h*sc/2;x+=(dx||0)*(side==="r"?1:-1);
+   el.style.setProperty("left",x+"px","important");el.style.setProperty("top",y+"px","important");
+   el.style.setProperty("transform-origin","0 0","important");
+   el.style.setProperty("transform","translate(0,0) scale("+sc+") rotate("+(rot!=null?rot:(side==="r"?2:-2))+"deg)","important")}
+  var rev=art.parentNode.classList.contains("rev");
+  [].forEach.call(art.querySelectorAll(":scope > .float"),function(f){
+   if(f.classList.contains("fr")){put(f,"l","top",narrow?.7:1);return}
+   if(f.classList.contains("fk")){put(f,"r","bot",narrow?.7:1);return}
+   if(f.classList.contains("duo")){
+    f.style.setProperty("position","absolute","important");f.style.setProperty("inset","0","important");f.style.setProperty("transform","none","important");
+    var pl=f.querySelector(".plan");pl.style.cssText="display:block;position:static;transform:none;width:auto;height:100%;max-width:none;margin:0;padding:0";
+    var d=f.querySelectorAll(".day");[].forEach.call(d,function(x){x.style.setProperty("width","220px","important")});
+    if(d[0])put(d[0],"l","mid",narrow?.75:1);if(d[1])put(d[1],"r","top",narrow?.75:1);return}
+   if(f.classList.contains("duo2")){
+    f.style.setProperty("position","absolute","important");f.style.setProperty("inset","0","important");f.style.setProperty("transform","none","important");
+    var st=f.querySelector(".strip");st.style.cssText="position:static;width:auto;height:100%;max-width:none;margin:0";
+    var ps=f.querySelectorAll(".pol");[].forEach.call(ps,function(x){x.style.setProperty("width",narrow?"130px":"160px","important")});
+    if(narrow)[].forEach.call(ps,function(x){x.style.setProperty("width","110px","important")});if(ps[0])put(ps[0],"l",.3,1,-9,6);if(ps[1])put(ps[1],"r",.32,1,7,10);if(ps[2])put(ps[2],"l",.68,1,6,18);if(ps[3])put(ps[3],"r",.82,1,-5,-8);return}
+   put(f,rev?"l":"r",art.parentNode.querySelector("#today")?"mid":"bot",narrow?.8:1)})})}
+addEventListener("load",fitCards);addEventListener("resize",fitCards);setTimeout(fitCards,300);
+// Rota: yazıların üstünden geçmeden zikzak iner. Bölümlerin içinde telefonların arkasından,
+// bölümler arasındaki boşlukta karşı tarafa geçer.
+var svg=document.getElementById("route"),path=document.getElementById("routePath"),tip=document.getElementById("tip"),len=0,clip;
+(function(){var ns="http://www.w3.org/2000/svg",defs=document.createElementNS(ns,"defs"),cp=document.createElementNS(ns,"clipPath");clip=document.createElementNS(ns,"rect");cp.id="rc";clip.setAttribute("width","100%");clip.setAttribute("height",0);cp.appendChild(clip);defs.appendChild(cp);svg.insertBefore(defs,svg.firstChild);path.setAttribute("clip-path","url(#rc)")})();
+function R(el){var r=el.getBoundingClientRect();return{l:r.left,r:r.right,t:r.top+scrollY,b:r.bottom+scrollY,m:r.top+scrollY+r.height/2}}
+function build(){
+ var H=document.documentElement.scrollHeight,W=document.documentElement.clientWidth,narrow=W<900,pts=[];
+ if(narrow){svg.style.display="none";path.setAttribute("d","");len=0;return}svg.style.display="";
+ svg.setAttribute("height",H);svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.style.height=H+"px";
+ var hero=document.getElementById("hero"),ht=hero.querySelector(".txt"),ha=R(hero.querySelector(".heroart"));
+ var tr=Math.max.apply(null,[].map.call(ht.children,function(c){return c.getBoundingClientRect().right}));
+ if(narrow){pts.push([W-12,R(hero).t+90])}else{pts.push([(tr+ha.l)/2,R(hero).t+140])}
+ var f=document.querySelectorAll(".facts div");
+ if(f.length>1){var a=R(f[0]),b=R(f[1]);pts.push([narrow?W-12:(a.r+b.l)/2,R(f[0].parentNode).m])}
+ [].forEach.call(document.querySelectorAll(".feat"),function(sec){var ar=R(sec.querySelector(".art")),rev=sec.classList.contains("rev");
+  pts.push([narrow?W-12:(rev?ar.l+30:ar.r-30),R(sec).m])});
+ var ic=document.querySelector(".final .appicon");if(ic){var r=R(ic);pts.push([W/2,r.m])}
+ var d="M"+pts[0][0]+" "+pts[0][1];for(var i=1;i<pts.length;i++){var p0=pts[i-1],p1=pts[i],my=(p0[1]+p1[1])/2;d+=" C"+p0[0]+" "+my+" "+p1[0]+" "+my+" "+p1[0]+" "+p1[1]}
+ path.setAttribute("d",d);len=path.getTotalLength();draw();
+}
+function pointAtY(y){var lo=0,hi=len;for(var k=0;k<22;k++){var m=(lo+hi)/2;if(path.getPointAtLength(m).y<y)lo=m;else hi=m}return path.getPointAtLength(lo)}
+function draw(){var y=scrollY+innerHeight*.62;clip.setAttribute("height",y);if(!len){pols.forEach(place);return}if(len){var p=pointAtY(y);tip.setAttribute("transform","translate("+p.x+","+p.y+")")}pols.forEach(place)}
+addEventListener("scroll",draw,{passive:true});addEventListener("resize",build);addEventListener("load",build);build();
 })();
 </script>
-
 </body>
 </html>
