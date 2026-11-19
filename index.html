@@ -59,6 +59,7 @@ h1 em,h2 em{font-style:normal;color:var(--coral)}
 .drop{position:absolute;width:30px;opacity:0;animation:drop 1s cubic-bezier(.3,1.6,.5,1) forwards;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12));z-index:4;pointer-events:none}
 @keyframes drop{0%{opacity:0;transform:translateY(-200px)}60%{opacity:1}100%{opacity:1;transform:none}}
 .pol{position:absolute;background:#fff;border:1px solid #eee;padding:8px 8px 34px;border-radius:6px;box-shadow:var(--sh);width:150px;cursor:grab;touch-action:none;user-select:none;margin:0;z-index:2;transition:transform .45s cubic-bezier(.2,1.5,.3,1)}
+@media(hover:none),(pointer:coarse){.pol{touch-action:auto;cursor:default;-webkit-user-select:none}}
 .pol.hover,.pol.dragging{z-index:20}.pol.dragging{cursor:grabbing;transition:none}
 .pol img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:3px;background:#eee;pointer-events:none}
 .pol span{position:absolute;left:0;right:0;bottom:6px;text-align:center;font-family:var(--hand);font-size:20px}
@@ -175,9 +176,9 @@ h2{font-size:clamp(38px,5.4vw,68px);line-height:.98;letter-spacing:-.04em;margin
 .note{font-family:var(--hand);font-size:26px;color:var(--coral);display:inline-block;transform:rotate(-2deg);margin-top:16px}
 .art{position:relative;display:flex;justify-content:flex-start;padding:0 0 0 10px}
 .feat.rev .art{justify-content:flex-end;padding:0 10px 0 0}
-.phone{position:relative;z-index:1;width:290px;aspect-ratio:600/1302;border-radius:50px;background:#111;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.08),inset 0 0 0 3px #333;flex:none}
-.screen{position:relative;width:100%;height:100%;border-radius:40px;overflow:hidden;background:#fff}
-.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone{position:relative;z-index:1;width:290px;height:auto;border-radius:50px;background:#111;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.08),inset 0 0 0 3px #333;flex:none}
+.screen{position:relative;width:100%;height:auto;aspect-ratio:600/1304;border-radius:40px;overflow:hidden;background:#fafafa center/cover no-repeat}
+.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}.screen video.ready{opacity:1}
 .float{position:absolute;bottom:40px;right:0;z-index:4;transform:scale(.74);transform-origin:bottom right}
 .feat.rev .float{right:auto;left:0;transform-origin:bottom left}
 .reveal{opacity:0;transform:translateY(50px);transition:opacity .8s,transform .8s cubic-bezier(.2,.9,.2,1)}
@@ -299,6 +300,20 @@ main .feat .art .float.duo2,main .feat.rev .art .float.duo2{position:absolute;in
 @media(max-width:900px){
  main .feat:not(.rev) .art:not(.center) .phone{transform:translateX(-44px)}
  main .feat.rev .art:not(.center) .phone{transform:translateX(80px)}
+}
+@media(max-width:600px){
+ main .feat:not(.rev) .art:not(.center) .phone,main .feat.rev .art:not(.center) .phone{transform:none}
+ main .feat .art .phone{width:210px}
+}
+/* telefon: hero kartı polaroidlerin üstünde, başlık kapanmasın */
+@media(max-width:600px){
+ .hero .heroart{height:540px!important}
+ .hero .hcard{left:50%!important;transform:translateX(-50%);top:25%!important;width:min(250px,66%)!important;z-index:5!important}
+ .hero .pol.fl:nth-of-type(1){left:0!important;top:0!important}
+ .hero .pol.fl:nth-of-type(2){right:0!important;top:1%!important}
+ .hero .pol.fl:nth-of-type(3){right:0!important;bottom:13%!important}
+ .hero .pol.fl:nth-of-type(4){left:0!important;bottom:11%!important}
+ .hero .saved{left:50%!important;right:auto!important;translate:-50% 0;bottom:-2%!important;z-index:6!important;white-space:nowrap}
 }
 </style>
 </head>
@@ -459,22 +474,27 @@ var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 // Videolar ekrana gelince yüklenir ve oynar, çıkınca durur
 // EN kaydı varsa (data-src-en / data-poster-en) İngilizcede o oynar
 function pick(v){var en=document.documentElement.lang==="en";return(en&&v.dataset.srcEn)||v.dataset.src}
-function load(v){var want=pick(v);if(!want){if(v.getAttribute("src")){v.removeAttribute("src");v.load()}return}if(v.getAttribute("src")!==want){v.src=want;v.load()}}
-function relang(){var en=document.documentElement.lang==="en";if(typeof tdy!=="undefined"&&tdy)tdy.render();[].forEach.call(document.querySelectorAll(".screen img[data-src-en]"),function(i){if(!i.dataset.srcTr)i.dataset.srcTr=i.getAttribute("src");i.setAttribute("src",en?i.dataset.srcEn:i.dataset.srcTr)});[].forEach.call(document.querySelectorAll(".art video"),function(v){if(v.dataset.posterEn){if(!v.dataset.posterTr)v.dataset.posterTr=v.getAttribute("poster");v.setAttribute("poster",en?v.dataset.posterEn:v.dataset.posterTr)}if(v.getAttribute("src")){var playing=!v.paused;load(v);if(playing)go(v)}})}
+function bg(v){var s=v.parentNode,u=v.getAttribute("poster");if(u)s.style.backgroundImage="url("+u+")"}
+function load(v){v.preload="auto";var want=pick(v);if(!want){if(v.getAttribute("src")){v.removeAttribute("src");v.load()}return}if(v.getAttribute("src")!==want){v.classList.remove("ready");v.src=want;v.load()}}
+function relang(){var en=document.documentElement.lang==="en";if(typeof tdy!=="undefined"&&tdy)tdy.render();[].forEach.call(document.querySelectorAll(".screen img[data-src-en]"),function(i){if(!i.dataset.srcTr)i.dataset.srcTr=i.getAttribute("src");i.setAttribute("src",en?i.dataset.srcEn:i.dataset.srcTr)});[].forEach.call(document.querySelectorAll(".art video"),function(v){if(v.dataset.posterEn){if(!v.dataset.posterTr)v.dataset.posterTr=v.getAttribute("poster");v.setAttribute("poster",en?v.dataset.posterEn:v.dataset.posterTr);bg(v)}if(v.getAttribute("src")){var playing=!v.paused;load(v);if(playing)go(v)}})}
 function go(v){v.muted=true;var p=v.play();if(p)p.catch(function(){pending.push(v)})}
 var pending=[];function kick(){var a=pending;pending=[];a.forEach(function(v){v.play().catch(function(){})})}
 ["pointerdown","touchstart","keydown","scroll"].forEach(function(t){addEventListener(t,kick,{passive:true})});
 var vio=new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){load(v);go(v)}else{v.pause()}})},{threshold:.3});
-[].forEach.call(document.querySelectorAll(".art video"),function(v){vio.observe(v)});
+[].forEach.call(document.querySelectorAll(".art video"),function(v){vio.observe(v);bg(v);["loadeddata","playing"].forEach(function(t){v.addEventListener(t,function(){v.classList.add("ready")})})});
+// Videolar ekrana gelmeden ~1 ekran önce yüklenmeye başlar
+var pre=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){load(e.target);pre.unobserve(e.target)}})},{rootMargin:"900px 0px"});
+[].forEach.call(document.querySelectorAll(".art video"),function(v){pre.observe(v)});
 // Bölümler belirince animasyon
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("in")})},{threshold:.25});
 [].forEach.call(document.querySelectorAll(".reveal"),function(el){io.observe(el)});
 // Polaroidler: kaydırınca kayar, sürüklenebilir
 var pols=[].slice.call(document.querySelectorAll(".fl"));
 pols.forEach(function(p){p.dx=0;p.dy=0;var sx,sy,ox,oy;
- p.addEventListener("pointerenter",function(){p.classList.add("hover");place(p)});
- p.addEventListener("pointerleave",function(){p.classList.remove("hover");place(p)});
- p.addEventListener("pointerdown",function(e){p.setPointerCapture(e.pointerId);p.classList.add("dragging");sx=e.clientX;sy=e.clientY;ox=p.dx;oy=p.dy});
+ p.addEventListener("pointerenter",function(e){if(e.pointerType!=="mouse")return;p.classList.add("hover");place(p)});
+ p.addEventListener("pointerleave",function(e){if(e.pointerType!=="mouse")return;p.classList.remove("hover");place(p)});
+// Dokunmatik ekranda sürükleme ve büyüme yok (sadece fare)
+ p.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse")return;p.setPointerCapture(e.pointerId);p.classList.add("dragging");sx=e.clientX;sy=e.clientY;ox=p.dx;oy=p.dy});
  p.addEventListener("pointermove",function(e){if(!p.classList.contains("dragging"))return;p.dx=ox+e.clientX-sx;p.dy=oy+e.clientY-sy;place(p)});
  p.addEventListener("pointerup",function(){p.classList.remove("dragging")})});
 function place(p){var y=(reduce||innerWidth<900)?0:window.scrollY,r=+p.dataset.r,h=p.classList.contains("hover");p.style.transform="translate("+p.dx+"px,"+(p.dy-y*+p.dataset.s-(h?10:0))+"px) rotate("+(h?-r*.3:r+y*.02*Math.sign(r))+"deg) scale("+(h?1.1:1)+")"}
@@ -548,7 +568,32 @@ function fitCards(){
     var ps=f.querySelectorAll(".pol");[].forEach.call(ps,function(x){x.style.setProperty("width",narrow?"130px":"160px","important")});
     if(narrow)[].forEach.call(ps,function(x){x.style.setProperty("width","110px","important")});if(ps[0])put(ps[0],"l",.3,1,-9,6);if(ps[1])put(ps[1],"r",.32,1,7,10);if(ps[2])put(ps[2],"l",.68,1,6,18);if(ps[3])put(ps[3],"r",.82,1,-5,-8);return}
    put(f,rev?"l":"r",art.parentNode.querySelector("#today")?"mid":"bot",narrow?.8:1)})})}
-addEventListener("load",fitCards);addEventListener("resize",fitCards);setTimeout(fitCards,300);
+// Telefon (<=600px): telefon ortada, kartlar telefonun alt kısmına hafifçe binerek altında durur
+function fitMobile(){
+ var vw=document.documentElement.clientWidth;
+ [].forEach.call(document.querySelectorAll(".feat .art"),function(art){
+  var ph=art.querySelector(".phone");art.style.marginBottom="";if(!ph)return;
+  if(art.querySelector(":scope > .float.duo2"))return;
+  var a=art.getBoundingClientRect(),p=ph.getBoundingClientRect(),bottom=0,rev=art.parentNode.classList.contains("rev");
+  function put(el,x,y,sc,rot){
+   el.style.setProperty("position","absolute","important");el.style.setProperty("margin","0","important");
+   el.style.setProperty("right","auto","important");el.style.setProperty("bottom","auto","important");
+   el.style.setProperty("left",(x-a.left)+"px","important");el.style.setProperty("top",y+"px","important");
+   el.style.setProperty("transform-origin","0 0","important");
+   el.style.setProperty("transform","scale("+sc+") rotate("+rot+"deg)","important")}
+  function size(el){el.style.setProperty("transform","none","important");return [el.offsetWidth,el.offsetHeight]}
+  var y0=p.bottom-a.top-70;
+  var duo=art.querySelector(":scope > .float.duo"),pair=null;
+  if(duo){duo.style.setProperty("position","absolute","important");duo.style.setProperty("inset","0","important");duo.style.setProperty("transform","none","important");pair=[].slice.call(duo.querySelectorAll(".day"))}
+  else{var fr=art.querySelector(":scope > .float.fr"),fk=art.querySelector(":scope > .float.fk");if(fr&&fk)pair=[fr,fk]}
+  if(pair&&pair.length===2){
+   pair.forEach(function(el,i){var wh=size(el),sc=Math.min(.62,(vw-36)/2/wh[0]);
+    var x=i===0?12:vw-12-wh[0]*sc,y=y0+(i?24:0);put(el,x,y,sc,i?3:-3);bottom=Math.max(bottom,y+wh[1]*sc)})}
+  else{[].forEach.call(art.querySelectorAll(":scope > .float"),function(f){var wh=size(f),sc=Math.min(.78,(vw-40)/wh[0],300/wh[1]);
+    var x=(vw-wh[0]*sc)/2+(rev?-12:12),y=y0;put(f,x,y,sc,rev?-2:2);bottom=Math.max(bottom,y+wh[1]*sc)})}
+  var extra=bottom-art.offsetHeight+10;if(extra>0)art.style.marginBottom=extra+"px"})}
+function fitAll(){fitCards();if(innerWidth<=600)fitMobile();else[].forEach.call(document.querySelectorAll(".feat .art"),function(a){a.style.marginBottom=""})}
+addEventListener("load",fitAll);addEventListener("resize",fitAll);setTimeout(fitAll,300);
 // Rota: yazıların üstünden geçmeden zikzak iner. Bölümlerin içinde telefonların arkasından,
 // bölümler arasındaki boşlukta karşı tarafa geçer.
 var svg=document.getElementById("route"),path=document.getElementById("routePath"),tip=document.getElementById("tip"),len=0,clip;
